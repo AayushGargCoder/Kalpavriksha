@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
 
 #define FILENAME "users.txt"
@@ -13,34 +12,57 @@ typedef struct
     int age;
 } User;
 
+size_t strlen(const char *str1)
+{
+    size_t len = 0;
+    while (str1[len] != '\0')
+        len++;
+    return len;
+}
+
+int isEqual(const char *str1, const char *str2)
+{
+    // actual strcmp return 0,-1,1
+    //  if return 0->match, return 1->first string is lexicographical grreater,-1->first string is lexicographical smaller, but here i only want tp check string equal or not. so return 0 they are equal,else return 1
+    int len1 = strlen(str1), len2 = strlen(str2);
+    if (len1 != len2)
+        return 1;
+    for (size_t i = 0; i < len1; i++)
+    {
+        if (str1[i] != str2[i])
+            return 1;
+    }
+    return 0;
+}
+
 void createUser()
 {
-    // a+->allow both reading and appending.
-    FILE *file = fopen(FILENAME, "a+");
+    // r+ does not create a file if the file not exist, but allows both reading and writing
+    // create a file in w+ mode.
+    FILE *file = fopen(FILENAME, "r+");
     if (!file)
     {
-        printf("Unable to open or create the file.\n");
-        return;
+        file = fopen(FILENAME, "w+");
+        if (!file)
+        {
+            printf("Unable to open or create the file.\n");
+            return;
+        }
     }
     User user;
     printf("Enter unique ID: ");
     scanf("%s", user.userId);
-    // set file to intial position
-    rewind(file);
-
     // Here we first check the user exist with that id or not.
     char userId[20];
     while (fscanf(file, "%s", userId) != EOF)
     {
-        if (strcmp(userId, user.userId) == 0)
+        if (isEqual(userId, user.userId) == 0)
         {
             printf("User ID already exists.\n");
+            fclose(file);
             return;
         }
     }
-    fclose(file);
-    file = fopen(FILENAME, "a");
-
     printf("Enter FirstName: ");
     scanf("%s", user.name);
     printf("Enter age: ");
@@ -62,10 +84,10 @@ void readUsers()
     User user;
     printf("Users:\n");
     // MACRO EOF return when we encounter with a  special character whose ASCII code 26 indicate end of file.
-    int i = 1;
+    int userCnt = 1;
     while (fscanf(file, "%s %s %d", user.userId, user.name, &user.age) != EOF)
     {
-        printf("User: %d,ID: %s, Name: %s, Age: %d\n", i++, user.userId, user.name, user.age);
+        printf("User: %d,ID: %s, Name: %s, Age: %d\n", userCnt++, user.userId, user.name, user.age);
     }
 
     fclose(file);
@@ -85,6 +107,17 @@ void updateFileStatus(bool found, const char *searchId, const char *msg)
         printf("User with ID %s not found.\n", searchId);
     }
 }
+void removeNewLine(char *name)
+{
+    for (int i = 0; name[i] != '\0'; i++)
+    {
+        if (name[i] == '\n')
+        {
+            name[i] = '\0';
+            return;
+        }
+    }
+}
 bool updateUser(FILE *file, FILE *tempFile, const char *searchId)
 {
     // A tempFile is best practice , because if we directly overWrite main file and if there is any program crash we lost our data.
@@ -93,7 +126,7 @@ bool updateUser(FILE *file, FILE *tempFile, const char *searchId)
     char choice = '\0';
     while (fscanf(file, "%s %s %d", user.userId, user.name, &user.age) != EOF)
     {
-        if (strcmp(user.userId, searchId) == 0)
+        if (isEqual(user.userId, searchId) == 0)
         {
             printf("Do you want to update the name? (y/n): ");
             getchar();
@@ -104,7 +137,8 @@ bool updateUser(FILE *file, FILE *tempFile, const char *searchId)
                 found = true;
                 printf("Enter new name (current: %s): ", user.name);
                 fgets(user.name, MAX_NAME_LEN, stdin);
-                user.name[strcspn(user.name, "\n")] = '\0';
+                // fgets also take newLine as input, so need to remove it
+                removeNewLine(user.name);
             }
 
             // Ask if the user wants to update the age
@@ -130,7 +164,7 @@ bool deleteUser(FILE *file, FILE *tempFile, const char *searchId)
     bool found = false;
     while (fscanf(file, "%s %s %d", user.userId, user.name, &user.age) != EOF)
     {
-        if (strcmp(user.userId, searchId) == 0)
+        if (isEqual(user.userId, searchId) == 0)
         {
             found = true;
             // we skip to  write this user into our file
@@ -138,6 +172,7 @@ bool deleteUser(FILE *file, FILE *tempFile, const char *searchId)
         }
         fprintf(tempFile, "%s %s %d\n", user.userId, user.name, user.age);
     }
+    printf("%d", found);
     return found;
 }
 
@@ -168,20 +203,23 @@ void helperModify(int choice)
     updateFileStatus(found, searchId, (choice == 3 ? "User updated successfully!\n" : "User deleted successfully!\n"));
 }
 
+int choice;
+void takeChoice()
+{
+    printf("\nUser Management System\n");
+    printf("1. Create User\n");
+    printf("2. Read Users\n");
+    printf("3. Update User\n");
+    printf("4. Delete User\n");
+    printf("5. Exit\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+}
 int main()
 {
-    int choice;
     do
     {
-        printf("\nUser Management System\n");
-        printf("1. Create User\n");
-        printf("2. Read Users\n");
-        printf("3. Update User\n");
-        printf("4. Delete User\n");
-        printf("5. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-
+        takeChoice();
         switch (choice)
         {
         case 1:
