@@ -1,19 +1,36 @@
 #include <stdio.h>
-int a, b, c;
+int base, expo, m;
 void binaryExpo()
 {
     int res = 1;
-    while (b)
+    while (expo)
     {
-        if (b & 1)
-            res = res * 1LL * a % c;
-        a = a * 1LL * a % c;
-        b = b / 2;
+        if (expo & 1)
+            res = res * 1LL * base % m;
+        base = base * 1LL * base % m;
+        expo = expo / 2;
     }
-    printf("%d", res);
+    printf("\n\nOutput:\n");
+    printf("Result: %d", res);
 }
 int main()
 {
-    scanf("%d %d %d", &a, &b, &c);
-    binaryExpo();
+    printf("Input:\n");
+    printf("Base (B): ");
+    scanf("%d", &base);
+    getchar();
+    // Prompt and input for exponent
+    printf("Exponent (N): ");
+    scanf("%d", &expo);
+    getchar();
+
+    // Prompt and input for modulus
+    printf("Modulus (M): ");
+    scanf("%d", &m);
+    if (expo >= 0 && m > 1)
+        binaryExpo();
+    else
+    {
+        printf("Please enter a valid input");
+    }
 }
