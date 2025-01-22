@@ -7,8 +7,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+void takeDimensionAndTarget(int *m,int *n,int *k){
+    printf("Enter matrix size and target:");
+    scanf("%d %d %d", m, n, k);
+}
 int **takeInput(int *m, int *n)
 {
+    printf("Enter matrix:\n");
     int **matrix = (int **)malloc(sizeof(int *) * (*m));
     for (int i = 0; i < (*m); i++)
     {
@@ -52,14 +57,9 @@ void deallocate(int **matrix, int m)
 int main()
 {
     int m, n, k;
-    printf("Enter First matrix size and k:");
-    scanf("%d %d %d", &m, &n, &k);
-
-    printf("Enter first matrix:\n");
+    takeDimensionAndTarget(&m,&n,&k);
     int **mat = takeInput(&m, &n);
-
     printf("\n%s", searchMatrix(mat, m, n, k) ? "True" : "False");
-
     deallocate(mat, m);
 
     return 0;
