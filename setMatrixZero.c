@@ -6,8 +6,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+void takeDimension(int *m,int *n){
+    printf("Enter matrix size:");
+    scanf("%d %d", m, n);
+}
+
 int **takeInput(int *m, int *n)
 {
+     printf("Enter matrix:\n");
     int **matrix = (int **)malloc(sizeof(int *) * (*m));
     for (int i = 0; i < (*m); i++)
     {
@@ -81,10 +87,8 @@ void deallocate(int **matrix, int m)
 int main()
 {
     int m, n;
-    printf("Enter First matrix size:");
-    scanf("%d %d", &m, &n);
+    takeDimension(&m,&n);
 
-    printf("Enter first matrix:\n");
     int **mat = takeInput(&m, &n);
 
     setZeroes(mat, m, n);
