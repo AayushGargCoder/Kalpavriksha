@@ -7,8 +7,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+void takeDimensionAndRotFactor(int *m,int *n,int *k){
+    printf("Enter matrix size and k:");
+    scanf("%d %d %d", m, n, k);
+}
 int **takeInput(int *m, int *n)
 {
+    printf("Enter matrix:\n");
     int **matrix = (int **)malloc(sizeof(int *) * (*m));
     for (int i = 0; i < (*m); i++)
     {
@@ -78,10 +83,7 @@ void deallocate(int **matrix, int m)
 int main()
 {
     int m, n, k;
-    printf("Enter First matrix size and k:");
-    scanf("%d %d %d", &m, &n, &k);
-
-    printf("Enter first matrix:\n");
+    takeDimensionAndRotFactor(&m,&n,&k);
     int **mat = takeInput(&m, &n);
 
     rotateGrid(mat, m, n, k);
