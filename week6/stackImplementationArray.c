@@ -1,3 +1,10 @@
+// 1. initializeStack()        -> O(1) and O(n)  // Allocates memory for stack array
+// 2. push()                   -> O(1) and O(1)  // Inserts element at the top in constant time
+// 3. isEmpty()                -> O(1) and O(1)  // Checks if stack is empty
+// 4. pop()                    -> O(1) and O(1)  // Removes top element in constant time
+// 5. top()                    -> O(1) and O(1)  // Returns top element without modification
+// 6. printStack()             -> O(n) and O(n)  // Recursively prints stack elements
+// 7. Total Elements           ->O(1) and O(1)  // Directly accesses the top index
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct

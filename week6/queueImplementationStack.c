@@ -1,3 +1,11 @@
+// 1. initializeStack()  -> O(1) and O(n)  // Initializes the stack with a fixed size, allocating O(n) space
+// 2. printQueue()      -> O(n) and O(n)  // Recursively prints elements, using stack space for recursion
+// 3. enqueue()         -> O(1) and O(1)  // Calls push(), which operates in constant time
+// 4. dequeue()         -> O(n) and O(n)  // Recursively removes elements, requiring O(n) recursive stack space
+// 5. front()           -> O(n) and O(n)  // Recursively accesses the bottom-most element, using O(n) recursion
+// 6. Total Elements   -> O(1) and O(1)  // Directly accesses the top index
+// 7. isEmpty()         -> O(1) and O(1)  // Single comparison operation using constant space
+
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct

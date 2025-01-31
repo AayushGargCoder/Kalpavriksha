@@ -1,3 +1,13 @@
+// 1. createNode()            -> O(1) and O(1)  // Allocates memory for a new node
+// 2. initializeStack()        -> O(1) and O(1)  // Initializes stack with null head and zero size
+// 3. push()                   -> O(1) and O(1)  // Adds a new node to the top of the stack
+// 4. isEmpty()                -> O(1) and O(1)  // Checks if the stack is empty
+// 5. pop()                    -> O(1) and O(1)  // Removes the top node and frees its memory
+// 6. top()                    -> O(1) and O(1)  // Returns the data of the top node
+// 7. printStack()             -> O(n) and O(n)  // Prints the stack using recursion with stack space
+// 8. freeStack()             -> O(n) and O(1)  // Frees all the nodes in the stack
+// 7. Total Elements           ->O(1) and O(1)  // Directly accesses the size
+
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct node

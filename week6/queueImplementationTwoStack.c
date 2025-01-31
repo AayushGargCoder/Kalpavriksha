@@ -1,3 +1,11 @@
+// 1. initializeStack()        -> O(1) and O(n)  // Allocates memory for stack array
+// 2. isEmpty()                -> O(1) and O(1)  // Checks if stack is empty
+// 3. enqueue()                -> O(1) and O(1)  // Calls push() to insert element
+// 4. stackTransfer()          -> O(n) and O(n)  // Transfers all elements to another stack
+// 5. dequeue()                -> O(n) and O(n)  // Transfers, removes, and restores elements
+// 6. front()                  -> O(n) and O(n)  // Transfers all elements to get front element
+// 7. printQueue()            -> O(n) and O(n)  // Transfers and prints all elements
+
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct

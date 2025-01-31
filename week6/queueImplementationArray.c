@@ -1,3 +1,11 @@
+// 1. initializeQueue()  -> O(1) and O(n)  // Memory allocation is constant time, but space depends on queue size
+// 2. push()            -> O(1) and O(1)  // Insertion at the rear is constant time with constant space
+// 3. pop()             -> O(1) and O(1)  // Incrementing front pointer is constant time with no extra space
+// 4. isEmpty()         -> O(1) and O(1)  // Single comparison operation using constant space
+// 5. front()           -> O(1) and O(1)  // Direct access to front element with no extra space
+// 6. printQueue()      -> O(n) and O(n)  // Recursively traverses and prints elements, using stack space for recursion
+// 7. Total Elements    -> O(1) and O(1)  // Simple subtraction operation with no extra space
+
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct

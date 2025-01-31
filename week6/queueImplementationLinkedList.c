@@ -1,3 +1,12 @@
+// 1. initializeQueue()  -> O(1) and O(1)  // Initializes pointers and size in constant time with no extra space
+// 2. push()            -> O(1) and O(1)  // Adds a node at the tail in constant time with constant extra space
+// 3. pop()             -> O(1) and O(1)  // Removes a node from the head in constant time with constant space
+// 4. isEmpty()         -> O(1) and O(1)  // Single comparison operation using constant space
+// 5. front()           -> O(1) and O(1)  // Direct access to head element with no extra space
+// 6. printQueue()      -> O(n) and O(n)  // Recursively prints elements, using stack space for recursion
+// 7. Total Elements    -> O(1) and O(1)  // Accesses size variable directly in constant time and space
+// 8. freeQueue()       -> O(n) and O(1)  // Iterates through the queue and free each node, using constant extra space
+
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct node
