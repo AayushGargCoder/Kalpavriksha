@@ -6,7 +6,6 @@ typedef struct Node
     struct Node *next;
 } Node;
 
-
 Node *createNode(int val)
 {
     Node *newNode = (Node *)malloc(sizeof(Node));
@@ -15,23 +14,25 @@ Node *createNode(int val)
     return newNode;
 }
 
-Node* segregateList(Node *head)
+Node *segregateList(Node *head)
 {
-    Node *even = createNode(-1), *odd = createNode(-1),*tailEven=even, *tailOdd=odd;
+    Node *even = createNode(-1), *odd = createNode(-1), *tailEven = even, *tailOdd = odd;
     while (head != NULL)
     {
-        Node* newNode = createNode(head->data);
         if (!(head->data % 2))
         {
-            tailEven->next = newNode;
-            tailEven = newNode;
+            tailEven->next = head;
+            tailEven = head;
+            head = head->next;
+            tailEven->next = NULL;
         }
         else
         {
-            tailOdd->next = newNode;
-            tailOdd = newNode;
+            tailOdd->next = head;
+            tailOdd = head;
+            head = head->next;
+            tailOdd->next = NULL;
         }
-        head = head->next;
     }
     tailEven->next = odd->next;
     return even->next;
@@ -39,21 +40,12 @@ Node* segregateList(Node *head)
 
 Node *takeInput()
 {
-    int totalNodes, track;
-    printf("Total Elements you want to Enter:");
-    scanf("%d", &totalNodes);
-    if (totalNodes <= 0)
-    {
-        printf("You have a empty list:");
-        exit(0);
-    }
-    track = totalNodes;
+    int nodeCount = 2, input;
     Node *head = NULL, *tail = NULL;
-    int input;
-    while (totalNodes--)
+    printf("Enter 1 node value (enter -1 to exit):");
+    scanf("%d", &input);
+    while (input != -1)
     {
-        printf("Enter %d element:", track - totalNodes);
-        scanf("%d", &input);
         Node *newNode = createNode(input);
         if (head == NULL)
         {
@@ -65,6 +57,8 @@ Node *takeInput()
             tail->next = newNode;
             tail = newNode;
         }
+        printf("Enter %d node value (enter -1 to exit):", nodeCount);
+        scanf("%d", &input);
     }
     return head;
 }
@@ -89,8 +83,7 @@ void freeList(Node *head)
 int main()
 {
     Node *head = takeInput();
-    Node* newList=segregateList(head);
-    printList(newList);
+    head = segregateList(head);
+    printList(head);
     freeList(head);
-    freeList(newList);
 }

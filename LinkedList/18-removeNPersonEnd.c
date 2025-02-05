@@ -6,35 +6,28 @@ typedef struct node
 	struct node *next;
 } Node;
 
-
-Node* deleteNthFromLast(Node *head, int k)
+Node *deleteNthFromLast(Node *head, int k)
 {
 	Node *fast = head, *slow = head;
-	while(k--) fast = fast -> next;
+	while (k--)
+		fast = fast->next;
 
-	if(!fast) {
-		Node* temp=head->next;
+	if (!fast)
+	{
+		Node *temp = head->next;
 		free(head->name);
 		free(head);
 		return temp;
 	}
-	while(fast -> next)
-		fast = fast -> next, slow = slow -> next;
-	Node* temp=slow->next;
-	slow -> next = slow -> next -> next;
+	while (fast->next)
+		fast = fast->next, slow = slow->next;
+	Node *temp = slow->next;
+	slow->next = slow->next->next;
 	free(temp->name);
 	free(temp);
 	return head;
 }
 
-Node *createNode()
-{
-	Node *newNode = (Node *)malloc(sizeof(Node));
-	newNode->next = NULL;
-	newNode->name = (char*)malloc(100);
-	scanf("%s",newNode->name);
-	return newNode;
-}
 void freeList(Node *head)
 {
 	while (head)
@@ -53,23 +46,24 @@ void printList(Node *head)
 		head = head->next;
 	}
 }
+Node *createNode(char *name)
+{
+	Node *newNode = (Node *)malloc(sizeof(Node));
+	newNode->next = NULL;
+	newNode->name = name;
+	return newNode;
+}
 Node *takeInput(int *kPtr)
 {
-	int totalPersons, track;
-	printf("Total persons in line:");
-	scanf("%d", &totalPersons);
-	if (totalPersons <= 0)
-	{
-		printf("You have a empty list:");
-		exit(0);
-	}
-	track = totalPersons;
+	int nodeCount = 1;
+	char *name = (char *)calloc(100, 1);
 	Node *head = NULL, *tail = NULL;
-	int input;
-	while (totalPersons--)
+	printf("Enter %d person name (enter to exit):", nodeCount);
+	scanf("%[^\n]", name);
+	while (name[0] != '\0')
 	{
-		printf("Enter %d person:", track - totalPersons);
-		Node *newNode = createNode();
+		getchar();
+		Node *newNode = createNode(name);
 		if (head == NULL)
 		{
 			head = newNode;
@@ -80,10 +74,18 @@ Node *takeInput(int *kPtr)
 			tail->next = newNode;
 			tail = newNode;
 		}
+		name = (char *)calloc(100, 1);
+		printf("Enter %d person name (enter to exit)", nodeCount + 1);
+		scanf("%[^\n]", name);
+		nodeCount++;
 	}
+	nodeCount--;
+	if (!nodeCount)
+		exit(0);
 	printf("Enter value of k:");
 	scanf("%d", kPtr);
-	if(track<(*kPtr)) {
+	if (nodeCount < (*kPtr))
+	{
 		printf("Your List remains same:");
 		printList(head);
 		freeList(head);
@@ -96,7 +98,7 @@ int main()
 {
 	int k;
 	Node *head = takeInput(&k);
-	head=deleteNthFromLast(head,k);
+	head = deleteNthFromLast(head, k);
 	printf("Your List After deleting:");
 	printList(head);
 	freeList(head);

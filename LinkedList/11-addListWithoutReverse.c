@@ -13,26 +13,31 @@ Node *createNode(int data)
     newNode->data = data;
     return newNode;
 }
-int getLength(Node* head) {
+int getLength(Node *head)
+{
     int length = 0;
-    while (head) {
+    while (head)
+    {
         length++;
         head = head->next;
     }
     return length;
 }
-void padList(Node** head, int padding) {
-    for (int i = 0; i < padding; i++) {
-        Node* newNode = createNode(0);
+void padList(Node **head, int padding)
+{
+    for (int i = 0; i < padding; i++)
+    {
+        Node *newNode = createNode(0);
         newNode->next = *head;
         *head = newNode;
     }
 }
-Node* addListsHelper(Node* first, Node* second, int* carry) {
+Node *addListsHelper(Node *first, Node *second, int *carry)
+{
     if (!first)
         return NULL;
 
-    Node* result = createNode(0);
+    Node *result = createNode(0);
     result->next = addListsHelper(first->next, second->next, carry);
 
     int sum = first->data + second->data + *carry;
@@ -42,7 +47,8 @@ Node* addListsHelper(Node* first, Node* second, int* carry) {
     return result;
 }
 
-Node* addLists(Node* first, Node* second) {
+Node *addLists(Node *first, Node *second)
+{
     int len1 = getLength(first);
     int len2 = getLength(second);
     if (len1 < len2)
@@ -51,9 +57,10 @@ Node* addLists(Node* first, Node* second) {
         padList(&second, len1 - len2);
 
     int carry = 0;
-    Node* result = addListsHelper(first, second, &carry);
-    if (carry) {
-        Node* newNode = createNode(carry);
+    Node *result = addListsHelper(first, second, &carry);
+    if (carry)
+    {
+        Node *newNode = createNode(carry);
         newNode->next = result;
         result = newNode;
     }
@@ -62,21 +69,12 @@ Node* addLists(Node* first, Node* second) {
 
 Node *takeInput()
 {
-    int totalNodes, track;
-    printf("Total Elements you want to Enter:");
-    scanf("%d", &totalNodes);
-    if (totalNodes <= 0)
-    {
-        printf("You have a empty list:");
-        exit(0);
-    }
-    track = totalNodes;
+    int nodeCount = 2, input;
     Node *head = NULL, *tail = NULL;
-    int input;
-    while (totalNodes--)
+    printf("Enter 1 node value (enter -1 to exit):");
+    scanf("%d", &input);
+    while (input != -1)
     {
-        printf("Enter %d element:", track - totalNodes);
-        scanf("%d", &input);
         Node *newNode = createNode(input);
         if (head == NULL)
         {
@@ -88,6 +86,8 @@ Node *takeInput()
             tail->next = newNode;
             tail = newNode;
         }
+        printf("Enter %d node value (enter -1 to exit):", nodeCount);
+        scanf("%d", &input);
     }
     return head;
 }

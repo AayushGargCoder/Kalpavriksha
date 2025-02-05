@@ -59,21 +59,12 @@ Node *addTwoNumbers(Node *head1, Node *head2)
 
 Node *takeInput()
 {
-    int totalNodes, track;
-    printf("Total Elements you want to Enter:");
-    scanf("%d", &totalNodes);
-    if (totalNodes <= 0)
-    {
-        printf("You have a empty list:");
-        exit(0);
-    }
-    track = totalNodes;
+    int nodeCount = 2, input;
     Node *head = NULL, *tail = NULL;
-    int input;
-    while (totalNodes--)
+    printf("Enter 1 node value (enter -1 to exit):");
+    scanf("%d", &input);
+    while (input != -1)
     {
-        printf("Enter %d element:", track - totalNodes);
-        scanf("%d", &input);
         Node *newNode = createNode(input);
         if (head == NULL)
         {
@@ -85,6 +76,8 @@ Node *takeInput()
             tail->next = newNode;
             tail = newNode;
         }
+        printf("Enter %d node value (enter -1 to exit):", nodeCount);
+        scanf("%d", &input);
     }
     return head;
 }

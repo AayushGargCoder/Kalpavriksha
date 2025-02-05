@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 typedef struct node
 {
-    int data;
+    int id;
     struct node *next;
 } Node;
 
@@ -57,14 +58,14 @@ Node *createNode(int val)
 {
     Node *newNode = (Node *)malloc(sizeof(Node));
     newNode->next = NULL;
-    newNode->data = val;
+    newNode->id = val;
     return newNode;
 }
 Node *takeInput()
 {
     int nodeCount = 2, input;
     Node *head = NULL, *tail = NULL;
-    printf("Enter 1 node value (enter -1 to exit):");
+    printf("Enter 1 emoployee Id(enter -1 to exit):");
     scanf("%d", &input);
     while (input != -1)
     {
@@ -79,20 +80,63 @@ Node *takeInput()
             tail->next = newNode;
             tail = newNode;
         }
-        printf("Enter %d node value (enter -1 to exit):", nodeCount);
+        printf("Enter %d emoployee Id(enter -1 to exit):", nodeCount);
         scanf("%d", &input);
     }
     return head;
 }
-void printList(Node *head)
+void printId(int val)
 {
-    printf("Your List After Reordering:");
-    while (head)
+    char str[20];
+    sprintf(str, "%d", val);
+
+    char idEmp[30];
+    strcpy(idEmp, "ITT/");
+    strcat(idEmp, str);
+    printf("%s ", idEmp);
+}
+void printListInvolvedBoth(Node *foosball, Node **tTennis)
+{
+    printf("Both Sports Involved:");
+    for (Node *ptr1 = foosball; ptr1 != NULL; ptr1 = ptr1->next)
     {
-        printf("%d ", head->data);
-        head = head->next;
+        Node *prev = NULL;
+        for (Node *ptr2 = *tTennis; ptr2 != NULL; ptr2 = ptr2->next)
+        {
+            if (ptr1->id == ptr2->id)
+            {
+                printId(ptr1->id);
+                if (prev == NULL)
+                {
+                    *tTennis = ptr2->next;
+                    free(ptr2);
+                }
+                else
+                {
+                    prev->next = ptr2->next;
+                    free(ptr2);
+                }
+                break;
+            }
+            prev = ptr2;
+        }
     }
 }
+void printListIndividual(Node *foosball, Node *tTennis)
+{
+    printf("\nIndividual Games:");
+    while (foosball)
+    {
+        printId(foosball->id);
+        foosball = foosball->next;
+    }
+    while (tTennis)
+    {
+        printId(tTennis->id);
+        tTennis = tTennis->next;
+    }
+}
+
 void freeList(Node *head)
 {
     while (head)
@@ -104,8 +148,14 @@ void freeList(Node *head)
 }
 int main()
 {
-    Node *head = takeInput();
-    reorderList(head);
-    printList(head);
-    freeList(head);
+    Node *foosball = takeInput(), *tTennis = takeInput();
+    if (!foosball && !tTennis)
+    {
+        printf("No One is playing any sport");
+        exit(0);
+    }
+    printListInvolvedBoth(foosball, &tTennis);
+    printListIndividual(foosball, tTennis);
+    freeList(foosball);
+    freeList(tTennis);
 }

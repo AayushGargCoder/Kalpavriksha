@@ -5,7 +5,81 @@ typedef struct node
     int data;
     struct node *next;
 } Node;
+Node *mid(Node *head)
+{
+    Node *slow = head;
+    Node *fast = head->next;
+    while (fast != NULL && fast->next != NULL)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    return slow;
+}
+Node *merge(Node *h1, Node *h2)
+{
+    Node *head = NULL, *tail = NULL;
 
+    while (h1 != NULL && h2 != NULL)
+    {
+        if (h1->data >= h2->data)
+        {
+            if (head == NULL)
+            {
+                head = h1;
+                tail = h1;
+            }
+            else
+            {
+                tail->next = h1;
+                tail = h1;
+            }
+            h1 = h1->next;
+        }
+        else
+        {
+            if (head == NULL)
+            {
+                head = h2;
+                tail = h2;
+            }
+            else
+            {
+                tail->next = h2;
+                tail = h2;
+            }
+            h2 = h2->next;
+        }
+    }
+    if (h1 != NULL)
+    {
+        tail->next = h1;
+    }
+    if (h2 != NULL)
+    {
+        tail->next = h2;
+    }
+    return head;
+}
+Node *mergeSort(Node *head)
+{
+    if (head == NULL || head->next == NULL)
+    {
+        return head;
+    }
+    Node *midN = mid(head);
+    Node *midNext = midN->next;
+    midN->next = NULL;
+    Node *first = mergeSort(head);
+    Node *second = mergeSort(midNext);
+    Node *res = merge(first, second);
+    return res;
+}
+Node *sortList(Node *head)
+{
+    head = mergeSort(head);
+    return head;
+}
 Node *reverse(Node *head)
 {
     if (head == NULL || head->next == NULL)
@@ -19,7 +93,7 @@ Node *reverse(Node *head)
     return rev;
 }
 
-Node *reverseKGroup(Node *head, int k)
+Node *sortKGroup(Node *head, int k)
 {
     if (!head)
         return head;
@@ -34,9 +108,9 @@ Node *reverseKGroup(Node *head, int k)
 
     Node *newGroupNode = temp->next;
     temp->next = NULL;
-    Node *rev = reverse(head);
-    head->next = reverseKGroup(newGroupNode, k);
-    return rev;
+    Node *sorted = sortList(head);
+    head->next = sortKGroup(newGroupNode, k);
+    return sorted;
 }
 
 Node *createNode(int val)
@@ -46,6 +120,7 @@ Node *createNode(int val)
     newNode->data = val;
     return newNode;
 }
+
 Node *takeInput()
 {
     int nodeCount = 2, input;
@@ -79,7 +154,7 @@ int getK()
 }
 void printList(Node *head)
 {
-    printf("Your List After reverse in k nodes  is:");
+    printf("Your List After sort in k nodes  is:");
     while (head)
     {
         printf("%d ", head->data);
@@ -101,9 +176,7 @@ int main()
     if (!head)
         exit(0);
     int k = getK();
-    if (k <= 0)
-        exit(0);
-    head = reverseKGroup(head, k);
+    head = sortKGroup(head, k);
     printList(head);
     freeList(head);
 }

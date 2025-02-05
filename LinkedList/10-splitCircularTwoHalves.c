@@ -45,21 +45,12 @@ Node *createNode(int val)
 }
 Node *takeInput()
 {
-    int totalNodes, track;
-    printf("Total Elements you want to Enter:");
-    scanf("%d", &totalNodes);
-    if (totalNodes <= 1)
-    {
-        printf("List should contain atleast two nodes");
-        exit(0);
-    }
-    track = totalNodes;
+    int nodeCount = 2, input;
     Node *head = NULL, *tail = NULL;
-    int input;
-    while (totalNodes--)
+    printf("Enter 1 node value (enter -1 to exit):");
+    scanf("%d", &input);
+    while (input != -1)
     {
-        printf("Enter %d element:", track - totalNodes);
-        scanf("%d", &input);
         Node *newNode = createNode(input);
         if (head == NULL)
         {
@@ -71,25 +62,27 @@ Node *takeInput()
             tail->next = newNode;
             tail = newNode;
         }
+        printf("Enter %d node value (enter -1 to exit):", nodeCount);
+        scanf("%d", &input);
     }
-    tail->next=head;
+    tail->next = head;
     return head;
 }
 void printList(Node *head)
 {
-    printf("%d->",head->data);
-    Node* tempK=head->next;
-    while (tempK!=head)
+    printf("%d->", head->data);
+    Node *tempK = head->next;
+    while (tempK != head)
     {
         printf("%d->", tempK->data);
         tempK = tempK->next;
     }
-    printf("%d\n",head->data);
+    printf("%d\n", head->data);
 }
 void freeList(Node *head)
 {
-    Node* tempK=head->next;
-    while (tempK!=head)
+    Node *tempK = head->next;
+    while (tempK != head)
     {
         Node *temp = head;
         head = head->next;
