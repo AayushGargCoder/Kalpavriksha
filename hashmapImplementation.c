@@ -183,9 +183,24 @@ void performOperations(hashmap *map)
 
     } while (operationNumber != 5);
 }
+void freeTable(hashmap *map)
+{
+    for (int i = 0; i < MAX; i++)
+    {
+        Node *head = map->bucket[i];
+
+        while (head)
+        {
+            Node *temp = head;
+            head = head->next;
+            free(temp);
+        }
+    }
+}
 int main()
 {
     hashmap map;
     initializeHashmap(&map);
     performOperations(&map);
+    freeTable(&map);
 }
