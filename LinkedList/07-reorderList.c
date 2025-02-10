@@ -86,6 +86,11 @@ Node *takeInput()
 }
 void printList(Node *head)
 {
+    if (!head)
+    {
+        printf("Empty List");
+        return;
+    }
     printf("Your List After Reordering:");
     while (head)
     {

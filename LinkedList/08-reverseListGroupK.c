@@ -79,6 +79,7 @@ int getK()
 }
 void printList(Node *head)
 {
+
     printf("Your List After reverse in k nodes  is:");
     while (head)
     {

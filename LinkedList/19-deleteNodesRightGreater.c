@@ -1,60 +1,53 @@
-
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct node
+typedef struct Node
 {
     int data;
-    struct node *next;
+    struct Node *next;
 } Node;
-Node *createNode(int data)
+
+Node *createNode(int val)
 {
     Node *newNode = (Node *)malloc(sizeof(Node));
     newNode->next = NULL;
-    newNode->data = data;
+    newNode->data = val;
     return newNode;
 }
-Node *reverseList(Node *head)
+
+Node *reverse(Node *head)
 {
     Node *prev = NULL;
     Node *curr = head;
-    Node *after = head->next;
+    Node *after = curr->next;
     while (curr != NULL)
     {
         curr->next = prev;
         prev = curr;
         curr = after;
         if (after != NULL)
+        {
             after = after->next;
+        }
     }
     return prev;
 }
-
-Node *addTwoNumbers(Node *head1, Node *head2)
+Node *removeNodesRight(Node *head)
 {
-    if (!head1)
-        return head2;
-    if (!head2)
-        return head1;
-    if (!head1 && !head2)
-        return NULL;
-    int carry = 0;
-    Node *newHead = createNode(-1);
-    Node *tail = newHead;
-    while (head1 || head2 || carry != 0)
+    // your code goes here
+    Node *rev = reverse(head);
+    Node *ans = rev;
+    while (rev)
     {
-        int head1Data = head1 ? head1->data : 0;
-        int head2Data = head2 ? head2->data : 0;
-        int finaldDta = head1Data + head2Data + carry;
-        tail->next = createNode(finaldDta % 10);
-        tail = tail->next;
-        carry = finaldDta / 10;
-        head1 = head1 ? head1->next : NULL;
-        head2 = head2 ? head2->next : NULL;
+        while (rev && rev->next && rev->data > rev->next->data)
+        {
+            Node *temp = rev->next;
+            rev->next = rev->next->next;
+            free(temp);
+        }
+        if (rev)
+            rev = rev->next;
     }
-    Node *head = newHead->next;
-    newHead->next = NULL;
-    free(newHead);
-    return reverseList(head);
+    return reverse(ans);
 }
 
 Node *takeInput()
@@ -83,12 +76,7 @@ Node *takeInput()
 }
 void printList(Node *head)
 {
-    if (!head)
-    {
-        printf("Empty List");
-        return;
-    }
-    printf("Your List After Addition:");
+    printf("Your List After removing Nodes with greater in right:");
     while (head)
     {
         printf("%d ", head->data);
@@ -106,10 +94,8 @@ void freeList(Node *head)
 }
 int main()
 {
-    Node *head1 = takeInput(), *head2 = takeInput();
-    Node *head = addTwoNumbers(head1, head2);
+    Node *head = takeInput();
+    head = removeNodesRight(head);
     printList(head);
     freeList(head);
-    freeList(head1);
-    freeList(head2);
 }

@@ -114,6 +114,11 @@ Node *sortList(Node *head)
 }
 void printList(Node *head)
 {
+    if (!head)
+    {
+        printf("Empty List");
+        return;
+    }
     printf("Your List After sorting:");
     while (head)
     {
